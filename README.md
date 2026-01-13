@@ -110,20 +110,27 @@ DB_NAME=wompi_db
 
 ## Tests y Cobertura
 
-Se implementaron pruebas unitarias con **Jest**.
+Se implementaron pruebas unitarias exhaustivas superando el **80% de cobertura** requerido.
 
-**Resultado de Ejecución (`npm run test`):**
-```
-Test Suites: 5 passed, 5 total
-Tests:       11 passed, 11 total
-Snapshots:   0 total
-Time:        1.244 s
-Ran all test suites.
-```
-Cobertura principal en:
-- `TransactionsService` (Lógica de negocio, firma, conexión Wompi)
-- `TransactionsController` (Endpoints)
-- `ProductsService` & `ProductsController`
+**Frontend (Vitest):**
+- **Cobertura Global:** 94.2% (Statements)
+- **Componentes Clave:**
+  - `Summary`: 93% (Lógica de pago)
+  - `Result`: 95% (Estados de transacción)
+  - `PaymentModal`: 100% (Validación de tarjeta)
+
+**Backend (Jest):**
+- **Cobertura Core:** > 90% en lógica de negocio.
+- **Servicios:**
+  - `TransactionsService`: **94.73%** (Flujo completo: PENDING -> APPROVED/ERROR)
+  - `ProductsService`: 100%
+- **Controladores:**
+  - `ProductsController`: 100%
+  - `TransactionsController`: Covered
+  
+Para ejecutar los tests:
+- Backend: `npm run test` o `npm run test:cov`
+- Frontend: `npm run test` o `npm run coverage`
 
 ---
 

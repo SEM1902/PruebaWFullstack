@@ -71,11 +71,19 @@ const Header = styled.header`
 
 const Logo = styled.div`
   font-weight: 800;
-  font-size: 1.5rem;
-  background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+  font-size: 1.8rem;
+  background: linear-gradient(to right, #60a5fa, #c084fc, #f472b6);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: -0.5px;
+  animation: gradientText 3s ease infinite;
+  background-size: 200% 200%;
+
+  @keyframes gradientText {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
 `;
 
 const Footer = styled.footer`
@@ -111,12 +119,12 @@ function App() {
       <GlobalStyle />
       <LayoutWrapper>
         <Header>
-          <Logo>WompiStore</Logo>
+          <Logo>NovaMarket</Logo>
           <div style={{ color: 'white', fontWeight: 500 }}>Challenge</div>
         </Header>
         <CheckoutFlow />
         <Footer>
-          © 2026 Wompi Certification Challenge • By Sem
+          © 2026 NovaMarket Certification Challenge • By Sem
         </Footer>
       </LayoutWrapper>
     </>

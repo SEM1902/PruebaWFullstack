@@ -154,10 +154,38 @@ export class TransactionsService {
     }
 
     async getTransaction(reference: string) {
-        return this.transactionRepository.findOne({
+        const transaction = await this.transactionRepository.findOne({
             where: { reference },
             relations: ['product', 'customer', 'delivery']
         });
+
+        if (transaction && transaction.status === 'PENDING' && transaction.wompiTransactionId) {
+            try {
+                // Check Wompi for Status Update
+                const response = await lastValueFrom(
+                    this.httpService.get(`${this.WOMPI_API}/transactions/${transaction.wompiTransactionId}`, {
+                        headers: { Authorization: `Bearer ${this.PRV_KEY}` } // Not always needed for public query but good practice
+                    })
+                );
+
+                const wompiData = response.data.data;
+                if (wompiData.status && wompiData.status !== 'PENDING') {
+                    console.log(`Updating Transaction ${reference} status: PENDING -> ${wompiData.status}`);
+
+                    transaction.status = wompiData.status;
+                    await this.transactionRepository.save(transaction);
+
+                    if (transaction.status === 'APPROVED') {
+                        transaction.product.stock -= 1;
+                        await this.productRepository.save(transaction.product);
+                    }
+                }
+            } catch (err) {
+                console.error('Error checking Wompi status:', err.message);
+            }
+        }
+
+        return transaction;
     }
 
     async updateStatus(id: string, status: 'APPROVED' | 'DECLINED' | 'ERROR' | 'VOIDED') {

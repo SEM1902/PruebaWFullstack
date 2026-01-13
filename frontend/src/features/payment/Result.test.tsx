@@ -111,7 +111,7 @@ describe('Result', () => {
             isLoading: false
         });
 
-        fireEvent.click(screen.getByText(/Return to Store/i));
+        fireEvent.click(screen.getByText(/Return to Market/i));
         expect(store.dispatch).toHaveBeenCalledTimes(1);
     });
 });

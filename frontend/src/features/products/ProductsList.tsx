@@ -174,7 +174,7 @@ const ProductsList = () => {
 
   return (
     <Container>
-      <Title>Wompi <span>Store</span></Title>
+      <Title>Nova <span>Market</span></Title>
       <Grid>
         {products?.map((product: any) => (
           <Card key={product.id}>

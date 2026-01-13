@@ -29,9 +29,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         type: 'postgres',
         host: configService.get<string>('DB_HOST', 'localhost'),
         port: configService.get<number>('DB_PORT', 5433),
-        username: configService.get<string>('DB_USER', 'user'),
-        password: configService.get<string>('DB_PASSWORD', 'password'),
-        database: configService.get<string>('DB_NAME', 'wompi_db'),
+        username: configService.get<string>('DB_USERNAME', 'postgres'),
+        password: configService.get<string>('DB_PASSWORD', 'postgres'),
+        database: configService.get<string>('DB_DATABASE', 'wompi_challenge'),
         entities: [ProductEntity, TransactionEntity, CustomerEntity, DeliveryEntity],
         synchronize: true, // DEV only
       }),

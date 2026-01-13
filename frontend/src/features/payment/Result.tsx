@@ -83,7 +83,10 @@ const IconWrapper = styled.div`
 const Result = () => {
   const dispatch = useDispatch();
   const { transactionReference } = useSelector((state: RootState) => state.cart);
-  const { data: transaction, isLoading } = useGetTransactionQuery(transactionReference);
+  const { data: transaction, isLoading } = useGetTransactionQuery(transactionReference, {
+    pollingInterval: 2000, // Check every 2 seconds
+    skip: !transactionReference
+  });
 
   useEffect(() => {
     if (transaction?.status === 'APPROVED') {
@@ -122,7 +125,7 @@ const Result = () => {
         </Info>
 
         <Button onClick={() => dispatch(resetCart())}>
-          Return to Store
+          Return to Market
         </Button>
       </ContentCard>
     </Container>

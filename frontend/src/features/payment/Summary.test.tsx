@@ -18,8 +18,8 @@ vi.mock('../api/apiSlice', () => ({
         middleware: () => (next: any) => (action: any) => next(action)
     },
     useCreateTransactionMutation: () => [
-        vi.fn().mockResolvedValue({
-            data: { reference: 'TX-TEST-REF' } // unwrap mock 
+        vi.fn().mockReturnValue({
+            unwrap: () => Promise.resolve({ reference: 'TX-TEST-REF' })
         }),
         { isLoading: false }
     ] // simplified mock for mutation hook
@@ -60,6 +60,13 @@ describe('Summary', () => {
             isLoading: false
         });
 
+        // Mock Wompi Acceptance Token
+        (axios.get as any).mockResolvedValue({
+            data: {
+                data: { presigned_acceptance: { acceptance_token: 'mock_acceptance_token' } }
+            }
+        });
+
         (useGetProductQuery as any).mockReturnValue({
             data: { id: '1', name: 'iPhone 15', price: 9000000, stock: 5 },
             isLoading: false
@@ -89,6 +96,7 @@ describe('Summary', () => {
         });
 
         // Click Pay
+        await waitFor(() => expect(screen.getByText(/Pay Now/i)).toBeInTheDocument());
         fireEvent.click(screen.getByText(/Pay Now/i));
 
         // Expect Wompi Call
@@ -116,6 +124,7 @@ describe('Summary', () => {
             response: { data: { error: { reason: 'Invalid Card' } } }
         });
 
+        await waitFor(() => expect(screen.getByText(/Pay Now/i)).toBeInTheDocument());
         fireEvent.click(screen.getByText(/Pay Now/i));
 
         await waitFor(() => {

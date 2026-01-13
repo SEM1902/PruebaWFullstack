@@ -1,28 +1,21 @@
-# System
-.DS_Store
-Thumbs.db
-
 # Dependencies
-node_modules/
+node_modules
+dist
+build
+coverage
 
 # Environment
 .env
-.env.local
-.env.*.local
+.DS_Store
 
-# Build
-dist/
-build/
-coverage/
+# IDE
+.vscode
+.idea
 
-# Logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Editor
-.vscode/
-.idea/
-
-# User Exclusions
-PROJECT_EXPLANATION.md
+# Brain/Agent
+.gemini
+task.md
+implementation_plan.md
+walkthrough.md
+evaluation_report.md
+*.log

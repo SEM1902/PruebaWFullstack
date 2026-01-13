@@ -63,7 +63,7 @@ const Summary = () => {
     useEffect(() => {
         const fetchMerchant = async () => {
             try {
-                const response = await axios.get(`https://api-sandbox.co.uat.wompi.dev/v1/merchants/pub_stagtest_g2u0HQd3ZMh05hsSgTS2lUV8t3s4mOt7`);
+                const response = await axios.get(`https://api-sandbox.co.uat.wompi.dev/v1/merchants/${import.meta.env.VITE_WOMPI_PUB_KEY}`);
                 const token = response.data.data.presigned_acceptance.acceptance_token;
                 setAcceptanceToken(token);
             } catch (error) {
@@ -100,7 +100,7 @@ const Summary = () => {
                 payload,
                 {
                     headers: {
-                        Authorization: 'Bearer pub_stagtest_g2u0HQd3ZMh05hsSgTS2lUV8t3s4mOt7'
+                        Authorization: `Bearer ${import.meta.env.VITE_WOMPI_PUB_KEY}`
                     }
                 }
             );
@@ -165,8 +165,8 @@ const Summary = () => {
 
                 {error && <ErrorMsg>{error}</ErrorMsg>}
 
-                <Button onClick={handlePayment} disabled={loading}>
-                    {loading ? 'Processing...' : 'Pay Now'}
+                <Button onClick={handlePayment} disabled={loading || !acceptanceToken}>
+                    {loading ? 'Processing...' : !acceptanceToken ? 'Loading Wompi Config...' : 'Pay Now'}
                 </Button>
                 <Button style={{ background: '#ccc', marginTop: '0.5rem' }} onClick={() => dispatch(setStep('PAYMENT'))} disabled={loading}>
                     Back

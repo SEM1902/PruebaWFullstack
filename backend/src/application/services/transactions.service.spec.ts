@@ -109,4 +109,66 @@ describe('TransactionsService', () => {
 
         expect(transactionRepo.save).toHaveBeenCalled(); // Should save ERROR status
     });
+
+    describe('getTransaction', () => {
+        it('should return transaction directly if not PENDING', async () => {
+            transactionRepo.findOne = jest.fn().mockResolvedValue({
+                status: 'APPROVED',
+                reference: 'TX-123'
+            });
+
+            const result = await service.getTransaction('TX-123');
+            expect(result.status).toBe('APPROVED');
+            expect(httpService.post).not.toHaveBeenCalled();
+        });
+
+        it('should check Wompi and update if PENDING', async () => {
+            const mockTx = {
+                status: 'PENDING',
+                reference: 'TX-123',
+                wompiTransactionId: 'wompi_123',
+                product: { id: '1', stock: 10 }
+            };
+            transactionRepo.findOne = jest.fn().mockResolvedValue(mockTx);
+            transactionRepo.save = jest.fn();
+            productRepo.save = jest.fn();
+
+            httpService.get = jest.fn().mockReturnValue(of({
+                data: { data: { status: 'APPROVED' } }
+            }));
+
+            const result = await service.getTransaction('TX-123');
+
+            expect(httpService.get).toHaveBeenCalled();
+            expect(transactionRepo.save).toHaveBeenCalled();
+            expect(mockTx.status).toBe('APPROVED');
+            expect(productRepo.save).toHaveBeenCalled(); // Stock decrement
+        });
+    });
+
+    describe('updateStatus', () => {
+        it('should update status and decrement stock if APPROVED', async () => {
+            const mockTx = {
+                id: '1',
+                status: 'PENDING',
+                product: { id: '1', stock: 10 }
+            };
+            transactionRepo.findOne = jest.fn().mockResolvedValue(mockTx);
+            transactionRepo.save = jest.fn();
+            productRepo.save = jest.fn();
+
+            await service.updateStatus('1', 'APPROVED');
+
+            expect(transactionRepo.save).toHaveBeenCalled();
+            expect(mockTx.status).toBe('APPROVED');
+            expect(productRepo.save).toHaveBeenCalled();
+            expect(mockTx.product.stock).toBe(9);
+        });
+
+        it('should throw error if transaction not found', async () => {
+            transactionRepo.findOne = jest.fn().mockResolvedValue(null);
+            await expect(service.updateStatus('999', 'APPROVED'))
+                .rejects.toThrow('Transaction not found');
+        });
+    });
 });
