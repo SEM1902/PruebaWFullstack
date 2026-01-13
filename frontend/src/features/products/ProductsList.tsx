@@ -4,102 +4,83 @@ import { useGetProductsQuery } from '../api/apiSlice';
 import { selectProduct, setStep } from '../cart/cartSlice';
 
 const Container = styled.div`
-  padding: 2rem 0;
+  padding: 3rem 1rem;
   max-width: 1200px;
   margin: 0 auto;
-  animation: fadeIn 0.6s ease-out;
-`;
-
-const Title = styled.h1`
-  text-align: center;
-  color: var(--text-color);
-  margin-bottom: 3rem;
-  font-weight: 800;
-  font-size: 2.5rem;
-  letter-spacing: -1px;
-  
-  span {
-    background: linear-gradient(135deg, var(--primary) 0%, #a5b4fc 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
+  animation: fadeIn 0.8s ease-out;
 `;
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 2.5rem;
-  padding: 0 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 3rem;
+  padding: 1rem;
 `;
 
 const Card = styled.div`
-  background: var(--card-bg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: var(--glass-border);
-  border-radius: 20px;
-  box-shadow: var(--shadow-sm);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 1);
+  border-radius: 24px;
+  box-shadow: 0 10px 40px -10px rgba(0,0,0,0.08);
   overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
+  position: relative;
   
   &:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-lg);
-    border-color: rgba(255, 255, 255, 0.6);
+    transform: translateY(-12px);
+    box-shadow: 0 20px 40px -10px rgba(92, 103, 245, 0.2);
+    border-color: #5c67f5;
   }
 `;
 
 const ImageContainer = styled.div`
-  background: white;
-  padding: 2rem;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 3rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 250px;
+  height: 280px;
   position: relative;
   overflow: hidden;
-
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: radial-gradient(circle at center, rgba(0,0,0,0.02) 0%, transparent 70%);
-  }
 `;
 
 const Image = styled.img`
-  max-width: 80%;
+  max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  transition: transform 0.3s ease;
-  filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
+  transition: transform 0.5s ease;
+  filter: drop-shadow(0 20px 20px rgba(0,0,0,0.15));
 
   ${Card}:hover & {
-    transform: scale(1.08);
+    transform: scale(1.1) rotate(-3deg);
   }
 `;
 
 const Content = styled.div`
-  padding: 1.5rem;
+  padding: 2rem;
   flex: 1;
   display: flex;
   flex-direction: column;
 `;
 
 const Name = styled.h3`
-  margin: 0 0 0.5rem 0;
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--text-color);
+  margin: 0 0 0.8rem 0;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #111827;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
 `;
 
 const Description = styled.p`
-  color: #6b7280;
+  color: #64748b;
   font-size: 0.95rem;
-  line-height: 1.5;
-  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
   flex-grow: 1;
 `;
 
@@ -108,44 +89,53 @@ const Footer = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-top: auto;
-  padding-top: 1rem;
-  border-top: 1px solid rgba(0,0,0,0.05);
+  padding-top: 1.5rem;
+  border-top: 1px dashed rgba(0,0,0,0.1);
 `;
 
 const Price = styled.div`
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 800;
-  color: var(--primary);
-  letter-spacing: -0.5px;
+  color: #111827;
+  letter-spacing: -1px;
+  
+  span {
+    font-size: 1rem;
+    color: #9ca3af;
+    font-weight: 500;
+    margin-right: 4px;
+  }
 `;
 
 const Stock = styled.div<{ $warning?: boolean }>`
-  font-size: 0.85rem;
-  font-weight: 600;
-  padding: 4px 8px;
-  border-radius: 6px;
-  background: ${props => props.$warning ? '#fff7ed' : '#f0fdf4'};
-  color: ${props => props.$warning ? '#c2410c' : '#15803d'};
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+  background: ${props => props.$warning ? '#fff1f2' : '#ecfdf5'};
+  color: ${props => props.$warning ? '#e11d48' : '#059669'};
+  border: 1px solid ${props => props.$warning ? '#fecdd3' : '#a7f3d0'};
 `;
 
 const Button = styled.button`
   width: 100%;
   margin-top: 1.5rem;
-  padding: 1rem;
-  background: var(--primary);
+  padding: 1.1rem;
+  background: #111827;
   color: white;
   border: none;
-  border-radius: 12px;
+  border-radius: 16px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 0 4px 12px rgba(92, 103, 245, 0.3);
+  transition: all 0.3s;
   
   &:hover:not(:disabled) {
-    background: var(--primary-hover);
+    background: #5c67f5;
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(92, 103, 245, 0.4);
+    box-shadow: 0 10px 20px -5px rgba(92, 103, 245, 0.4);
   }
 
   &:active:not(:disabled) {
@@ -153,10 +143,9 @@ const Button = styled.button`
   }
   
   &:disabled {
-    background: #e5e7eb;
-    color: #9ca3af;
+    background: #f3f4f6;
+    color: #d1d5db;
     cursor: not-allowed;
-    box-shadow: none;
   }
 `;
 
@@ -174,7 +163,6 @@ const ProductsList = () => {
 
   return (
     <Container>
-      <Title>Nova <span>Market</span></Title>
       <Grid>
         {products?.map((product: any) => (
           <Card key={product.id}>
@@ -182,21 +170,24 @@ const ProductsList = () => {
               <Image src={product.imageUrl} alt={product.name} />
             </ImageContainer>
             <Content>
-              <Name>{product.name}</Name>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                <Name>{product.name}</Name>
+                <Stock $warning={product.stock < 5}>
+                  {product.stock > 0 ? `${product.stock} Available` : 'Sold Out'}
+                </Stock>
+              </div>
+
               <Description>{product.description}</Description>
 
               <Footer>
-                <Price>${(product.price / 100).toLocaleString()}</Price>
-                <Stock $warning={product.stock < 5}>
-                  {product.stock > 0 ? `${product.stock} Left` : 'Sold Out'}
-                </Stock>
+                <Price><span>$</span>{(product.price / 100).toLocaleString()}</Price>
               </Footer>
 
               <Button
                 onClick={() => handleBuy(product.id)}
                 disabled={product.stock === 0}
               >
-                {product.stock > 0 ? 'Buy Now' : 'Out of Stock'}
+                {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
               </Button>
             </Content>
           </Card>

@@ -15,13 +15,22 @@ const Container = styled.div`
 `;
 
 const ContentCard = styled.div`
-  background: var(--card-bg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: var(--glass-border);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
   padding: 3rem;
-  border-radius: 24px;
-  box-shadow: var(--shadow-lg);
+  border-radius: 32px;
+  box-shadow: 0 25px 50px -12px rgba(60, 70, 200, 0.15);
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 6px;
+    background: linear-gradient(90deg, #5c67f5, #10b981, #f59e0b);
+  }
 `;
 
 const Title = styled.h1<{ $status: string }>`
