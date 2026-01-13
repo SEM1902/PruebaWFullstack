@@ -39,21 +39,47 @@ const VisualCard = styled.div`
   color: white;
   padding: 25px;
   margin-bottom: 2rem;
-  box-shadow: 0 20px 40px -10px rgba(0,0,0,0.3);
+  box-shadow: 0 20px 40px -10px rgba(0,0,0,0.4);
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   transform-style: preserve-3d;
   transition: transform 0.6s;
+  overflow: hidden;
 
+  /* Holographic Sheen */
   &::before {
     content: '';
     position: absolute;
+    top: -50%; left: -50%; width: 200%; height: 200%;
+    background: linear-gradient(
+      transparent, 
+      rgba(255, 255, 255, 0.1), 
+      transparent
+    );
+    transform: rotate(45deg);
+    animation: sheen 6s infinite;
+  }
+
+  /* Texture */
+  &::after {
+    content: '';
+    position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    border-radius: 16px;
-    background: linear-gradient(125deg, rgba(255,255,255,0.1) 0%, transparent 40%, transparent 60%, rgba(255,255,255,0.1) 100%);
+    background-image: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.1) 2px,
+      rgba(0,0,0,0.1) 4px
+    );
     pointer-events: none;
+  }
+
+  @keyframes sheen {
+    0% { transform: translateX(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) rotate(45deg); }
   }
 `;
 

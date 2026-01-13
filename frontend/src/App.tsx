@@ -10,7 +10,7 @@ const GlobalStyle = createGlobalStyle`
   :root {
     --primary: #5c67f5;
     --primary-hover: #4a54c7;
-    --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    --bg-gradient: linear-gradient(-45deg, #f5f7fa, #c3cfe2, #e0e7ff, #f3e8ff);
     --text-color: #1f2937;
     --card-bg: rgba(255, 255, 255, 0.7);
     --glass-border: 1px solid rgba(255, 255, 255, 0.5);
@@ -22,9 +22,17 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     background: var(--bg-gradient);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
     color: var(--text-color);
     min-height: 100vh;
     overflow-x: hidden;
+  }
+
+  @keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
   }
 
   * { box-sizing: border-box; }
